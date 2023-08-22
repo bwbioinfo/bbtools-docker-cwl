@@ -1,10 +1,10 @@
 input_forward:
   class: File
-  path: testdata/input_forward.fastq
+  path: testdata/test_forward.fastq
 
 input_reverse:
   class: File
-  path: testdata/input_reverse.fastq
+  path: testdata/test_reverse.fastq
 
 adapters:
   class: File

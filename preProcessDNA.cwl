@@ -1,6 +1,8 @@
-cwlVersion: v1.2
+#!/usr/bin/env cwl-runner
+
+cwlVersion: v1.0
 class: CommandLineTool
-baseCommand: ["/bin/bash", "preprocessing_script.sh"]
+baseCommand: ["/bin/bash", "preProcessDNA.sh"]
 doc: |
   This CWL workflow uses the provided preprocessing script to perform quality trimming,
   adapter removal, and data cleaning on paired-end Illumina sequencing data.
@@ -39,7 +41,7 @@ outputs:
 
 requirements:
   DockerRequirement:
-    dockerPull: docker pull ghcr.io/bwbioinfo/bbtools-docker-cwl:latest
+    dockerPull: ghcr.io/bwbioinfo/bbtools-docker-cwl:latest
 
 stdout: preprocessing.log
 stderr: preprocessing.err

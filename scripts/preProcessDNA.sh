@@ -1,13 +1,19 @@
 #!/bin/bash
 
-# Set input and output file paths
-input_forward="input_forward.fastq"
-input_reverse="input_reverse.fastq"
-output_forward="cleaned_forward.fastq"
-output_reverse="cleaned_reverse.fastq"
+# Usage: ./preprocessing_script.sh input_forward input_reverse output_forward output_reverse adapters
 
-# Adapter sequences file
-adapters="adapters.fa"
+# Check if all required arguments are provided
+if [ "$#" -ne 5 ]; then
+    echo "Usage: $0 input_forward input_reverse output_forward output_reverse adapters"
+    exit 1
+fi
+
+# Input arguments
+input_forward="$1"
+input_reverse="$2"
+output_forward="$3"
+output_reverse="$4"
+adapters="$5"
 
 # Run bbduk for quality trimming and adapter removal
 bbduk.sh in1="$input_forward" in2="$input_reverse" out1="$output_forward" out2="$output_reverse" \
