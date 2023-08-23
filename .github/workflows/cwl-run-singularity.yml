@@ -1,0 +1,27 @@
+name: CWL Workflow with Singularity
+
+on:
+  workflow_dispatch:  # This event allows manual triggering
+  push:
+    branches:
+      - main
+
+jobs:
+  test_workflow:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto_activate_base: false
+          prefix: ${{github.workspace}}/miniconda
+
+      - name: Install Singularity via Conda
+        run: |
+          source ${{github.workspace}}/miniconda/etc/profile.d/conda.sh
+          conda create -n singularity_env -c conda-forge -y singularity
+          conda activate singularity_env
