@@ -32,7 +32,7 @@ To install and run the tool, follow these steps:
     ```
     OR
     ```shell
-    cwl-runner --singularity bbtools.cwl inputs.yml
+    cwltool --singularity bbtools.cwl inputs.yml
     ```
 
    This will run the `bbtools` software on the input sequence specified in the `bbtools.yml` file.
