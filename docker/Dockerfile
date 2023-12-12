@@ -1,26 +1,35 @@
-# Use the official Rocky Linux base image
-FROM rockylinux/rockylinux:latest
+FROM ubuntu:20.04
 
-# Set the maintainer label
-LABEL maintainer="your-email@example.com"
+ARG INSTALL_PATH=/opt
+ARG DEPPATH=./Dependencies
 
-# Install necessary dependencies and tools
-RUN yum update -y && \
-    yum install -y java-1.8.0-openjdk wget && \
-    yum clean all
+LABEL maintainer="csfg-helpdesk@concordia.ca"
+LABEL version="1.00"
+LABEL description="This is the custom Docker Image for RNA-Seq and DNA-Seq Preprocessing, for use by CSFG."
 
-# Set the working directory
-WORKDIR /opt
+# Disable Prompt During Packages Installation
+ARG DEBIAN_FRONTEND=noninteractive
 
-# Download and install BBTools
-RUN wget https://sourceforge.net/projects/bbmap/files/latest/download/BBMap_38.86.tar.gz && \
-    tar -xzf BBMap_38.86.tar.gz && \
-    rm BBMap_38.86.tar.gz
+# Update Ubuntu Software repository
+RUN apt update
+RUN apt-get install -y openjdk-11-jdk
 
-# Add BBTools to the PATH
-ENV PATH="/opt/bbmap:${PATH}"
-COPY scripts /opt/scripts
-RUN chmod a+x /opt/scripts
+### BBMAP ###
+# copy BBMAP program
+RUN  mkdir ${INSTALL_PATH}/bioinformatics
+RUN  mkdir ${INSTALL_PATH}/sortmerna
+COPY ${DEPPATH}/bbmap ${INSTALL_PATH}/bioinformatics/bbmap
+COPY ${DEPPATH}/rRNA_databases ${INSTALL_PATH}/bioinformatics/sortmerna/rRNA_databases
 
-# Set a default command
-CMD ["bbmap.sh"]
+### DNA-SEQ ###
+# copy preprocess DNA script
+COPY $DEPPATH/preprocessDNAreads.sh $INSTALL_PATH/preprocessDNAreads.sh
+
+### RNA-SEQ ###
+# copy preprocess RNA script
+COPY $DEPPATH/preprocessRNAreads.sh $INSTALL_PATH/preprocessRNAreads.sh
+
+ENV  PATH="$INSTALL_PATH/:$PATH"
+ENV  PATH="$INSTALL_PATH/bioinformatics/bbmap/:$PATH"
+
+RUN  chmod -R a+rxX $INSTALL_PATH/*
