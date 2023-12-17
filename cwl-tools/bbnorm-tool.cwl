@@ -2,8 +2,11 @@ cwlVersion: v1.0
 class: CommandLineTool
 baseCommand: bbnorm.sh
 
+
 requirements:
   - class: InlineJavascriptRequirement
+  - class: DockerRequirement
+    dockerPull: ghcr.io/bwbioinfo/bbtools-docker-cwl:latest
 
 inputs:
   - id: in_reads

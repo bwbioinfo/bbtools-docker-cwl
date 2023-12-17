@@ -4,6 +4,8 @@ baseCommand: reformat.sh
 
 requirements:
   - class: InlineJavascriptRequirement
+  - class: DockerRequirement
+    dockerPull: ghcr.io/bwbioinfo/bbtools-docker-cwl:latest
 
 inputs:
   - id: in_reads
